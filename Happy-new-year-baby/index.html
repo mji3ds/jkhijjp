@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Year Surprise</title>
+  <style>
+    /* Global styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(45deg, #ff6ec7, #d4a5a5);
+      overflow: auto; /* Make the page scrollable */
+      position: relative;
+      animation: bgAnimation 10s ease infinite;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+      border-radius: 25px;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .button {
+      padding: 30px 60px;
+      font-size: 36px;
+      background-color: #ff6347;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 30px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      transform: scale(1);
+    }
+
+    .button:hover {
+      background-color: #ff4500;
+      transform: scale(1.1);
+    }
+
+    .button:active {
+      transform: scale(1);
+    }
+
+    .message {
+      display: none;
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff1493;
+      margin-top: 30px;
+      animation: fadeIn 2s ease-out forwards, glitterEffect 1.5s infinite alternate;
+      background: linear-gradient(45deg, #ff6347, #ff1493, #8a2be2, #ff6347);
+      background-clip: text;
+      text-fill-color: transparent;
+      text-shadow: 0 0 20px #ff1493, 0 0 30px #ff6347, 0 0 40px #8a2be2;
+    }
+
+    .countdown {
+      font-size: 50px;
+      font-weight: bold;
+      color: #ff6347;
+      margin-top: 30px;
+      visibility: hidden;
+    }
+
+    /* Firework Explosion */
+    @keyframes fireworks {
+      0% {
+        transform: scale(0.1);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(10);
+        opacity: 0;
+      }
+    }
+
+    .firework {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff6347, #ff1493, #8a2be2, #ff1493, #ff6347);
+      animation: fireworks 1s ease-out forwards;
+    }
+
+    /* Background animation */
+    @keyframes bgAnimation {
+      0% {
+        background: linear-gradient(45deg, #ff6ec7, #d4a5a5);
+      }
+      50% {
+        background: linear-gradient(45deg, #ff9a8b, #f7c1d6);
+      }
+      100% {
+        background: linear-gradient(45deg, #ff6ec7, #d4a5a5);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <button class="button" onclick="startCelebration()">Push Me</button>
+    <p class="countdown" id="countdown"></p>
+    <p class="message" id="surpriseMessage">HAPPY NEW YEAR BABE!, Thank you for Being there for me and also putting a smile on my face when I was feeling down, Thank you for giving me a reason to move on, ur Indeed the best thing that has ever happened to me and I love you so so much, Thank you for being you, 💋💋💋❤️❤️❤️</p>
+  </div>
+
+  <!-- Fireworks Explosion -->
+  <div id="fireworks" class="fireworks"></div>
+
+  <!-- Realistic Firework Sound -->
+  <audio id="fireworkSound" src="https://www.freesoundslibrary.com/wp-content/uploads/2016/09/Fireworks-Explosion-Sound.mp3" preload="auto"></audio>
+
+  <script>
+    let countdownTime = 3; // Set countdown to 3 seconds
+    let countdownInterval;
+    let explosionInterval;
+    let fireworkSound = document.getElementById("fireworkSound");
+
+    function startCelebration() {
+      // Play realistic firework sound and set the volume
+      fireworkSound.volume = 1.0; // Max volume for louder sound
+      fireworkSound.play();
+
+      // Trigger explosions 1.5 seconds before the surprise message is revealed
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => {
+            createFirework();
+          }, Math.random() * 2000);  // Random delay between 0 and 2 seconds for each firework
+        }
+      }, 1500);  // Start explosions 1.5 seconds before the surprise message
+
+      // Start countdown
+      document.getElementById("countdown").style.visibility = "visible";
+      countdownInterval = setInterval(function() {
+        document.getElementById("countdown").innerText = countdownTime;
+        countdownTime--;
+
+        if (countdownTime < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").style.visibility = "hidden";
+          document.getElementById("surpriseMessage").style.display = "block";
+
+          // Continue explosions for 2.5 seconds after the message is revealed
+          explosionInterval = setInterval(function() {
+            createFirework();
+          }, 300); // Create explosions every 300ms for 2.5 seconds
+
+          // Stop fireworks after 2.5 seconds
+          setTimeout(() => {
+            clearInterval(explosionInterval);
+          }, 2500);
+        }
+      }, 1000);
+    }
+
+    // Function to create firework explosions
+    function createFirework() {
+      const firework = document.createElement("div");
+      firework.classList.add("firework");
+      firework.style.top = `${Math.random() * 100}%`;
+      firework.style.left = `${Math.random() * 100}%`;
+      document.body.appendChild(firework);
+      setTimeout(() => {
+        firework.remove();
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
